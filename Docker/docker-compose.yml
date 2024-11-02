@@ -1,0 +1,6 @@
+﻿services:
+  todoproject.api:
+    image: todoproject.api
+    build:
+      context: .
+      dockerfile: ToDoProject.Api/Dockerfile
