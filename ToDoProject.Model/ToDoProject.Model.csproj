@@ -10,4 +10,8 @@
       <ProjectReference Include="..\ToDoProject.Core\ToDoProject.Core.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Dto\" />
+    </ItemGroup>
+
 </Project>

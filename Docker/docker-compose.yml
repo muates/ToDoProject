@@ -1,6 +1,19 @@
-﻿services:
-  todoproject.api:
-    image: todoproject.api
-    build:
-      context: .
-      dockerfile: ToDoProject.Api/Dockerfile
+﻿version: '3.8'
+services:
+  database:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: ${POSTGRES_TODO_PROJECT_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_TODO_PROJECT_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_TODO_PROJECT_DB}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-scripts:/docker-entrypoint-initdb.d
+    ports:
+      - "${POSTGRES_TODO_PROJECT_PORT}:5432"
+    command: >
+      postgres -c max_prepared_transactions=10
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
