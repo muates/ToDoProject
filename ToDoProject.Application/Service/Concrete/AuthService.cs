@@ -2,8 +2,8 @@ using ToDoProject.Application.Converter;
 using ToDoProject.Application.Helper;
 using ToDoProject.Application.Service.Abstract;
 using ToDoProject.Core.Model.Response;
+using ToDoProject.Core.Service.Abstract;
 using ToDoProject.DataAccess.Repository.Abstract;
-using ToDoProject.DataAccess.UnitOfWork.Abstract;
 using ToDoProject.Model.Dto.User.Request;
 using ToDoProject.Model.Dto.User.Response;
 
@@ -44,6 +44,8 @@ public class AuthService(
 
         var user = UserConverter.ToEntity(request, passwordHash, passwordSalt);
         await userRepository.AddAsync(user);
+
+        await unitOfWork.SaveChangesAsync();
 
         var role = roleService.GetRoleByNameAsync("ROLE_USER");
 

@@ -2,13 +2,13 @@ using Microsoft.EntityFrameworkCore;
 using ToDoProject.Application.Service.Abstract;
 using ToDoProject.Application.Service.Concrete;
 using ToDoProject.Core.Config;
+using ToDoProject.Core.Service.Abstract;
+using ToDoProject.Core.Service.Concrete;
 using ToDoProject.CrossCutting.Logger.Abstract;
 using ToDoProject.CrossCutting.Logger.Concrete;
 using ToDoProject.DataAccess.Context;
 using ToDoProject.DataAccess.Repository.Abstract;
 using ToDoProject.DataAccess.Repository.Concrete;
-using ToDoProject.DataAccess.UnitOfWork.Abstract;
-using ToDoProject.DataAccess.UnitOfWork.Concrete;
 
 namespace ToDoProject.Api.Extension;
 
@@ -30,7 +30,6 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IRoleRepository, RoleRepository>();
         services.AddScoped<IUserRoleRepository, UserRoleRepository>();
-        services.AddScoped<IUnitOfWork, UnitOfWork>();
         
         return services;
     }
@@ -42,13 +41,19 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
+    public static IServiceCollection AddUnitOfWork<TContext>(this IServiceCollection services) where TContext : DbContext
+    {
+        services.AddScoped<IUnitOfWork, UnitOfWork<TContext>>();
+        return services;
+    }
+
     public static IServiceCollection AddDatabaseConnections(this IServiceCollection services)
     {
         EnvironmentConfig.LoadEnv();
-        
-        services.AddDbContext<PostgreSqlDbContext>(
-            options => options.UseNpgsql(EnvironmentConfig.PostgreSqlConnection), ServiceLifetime.Transient);
-        
+
+        services.AddDbContext<PostgreSqlDbContext>(options =>
+            options.UseNpgsql(EnvironmentConfig.PostgreSqlConnection));
+
         return services;
     }
 }

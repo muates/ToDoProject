@@ -1,4 +1,4 @@
-namespace ToDoProject.DataAccess.UnitOfWork.Abstract;
+namespace ToDoProject.Core.Service.Abstract;
 
 public interface IUnitOfWork : IDisposable
 {

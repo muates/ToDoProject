@@ -1,6 +1,6 @@
 using ToDoProject.Application.Service.Abstract;
+using ToDoProject.Core.Service.Abstract;
 using ToDoProject.DataAccess.Repository.Abstract;
-using ToDoProject.DataAccess.UnitOfWork.Abstract;
 using ToDoProject.Model.Entity;
 
 namespace ToDoProject.Application.Service.Concrete;

@@ -1,6 +1,7 @@
 using ToDoProject.Api.Extension;
 using ToDoProject.CrossCutting.Logger.Abstract;
 using ToDoProject.CrossCutting.Logger.Concrete;
+using ToDoProject.DataAccess.Context;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,7 @@ builder.Services
     .AddApplicationServices()
     .AddDataAccessServices()
     .AddCrossCuttingServices()
+    .AddUnitOfWork<PostgreSqlDbContext>()
     .AddDatabaseConnections();
 
 builder.Logging.ClearProviders();

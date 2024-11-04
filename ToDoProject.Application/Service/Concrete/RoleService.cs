@@ -1,7 +1,7 @@
 using ToDoProject.Application.Service.Abstract;
+using ToDoProject.Core.Service.Abstract;
 using ToDoProject.CrossCutting.Ex;
 using ToDoProject.DataAccess.Repository.Abstract;
-using ToDoProject.DataAccess.UnitOfWork.Abstract;
 using ToDoProject.Model.Dto.Role.Request;
 using ToDoProject.Model.Entity;
 
