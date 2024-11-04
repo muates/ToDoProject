@@ -1,15 +1,16 @@
+using ToDoProject.DataAccess.Context;
 using ToDoProject.DataAccess.Repository.Abstract;
+using ToDoProject.Model.Entity;
 
 namespace ToDoProject.DataAccess.Repository.Concrete;
 
-public class UserRoleRepository : IUserRoleRepository
+public class UserRoleRepository(PostgreSqlDbContext context) : IUserRoleRepository
 {
-    public Task AddUserToRoleAsync(string userId, int roleId)
-    {
-        throw new NotImplementedException();
-    }
+    private readonly PostgreSqlDbContext _context = context;
 
-    public Task RemoveUserFromRoleAsync(string userId, int roleId)
+    public async Task AddUserToRoleAsync(UserRole userRole) => await _context.UserRoles.AddAsync(userRole);
+
+    public async Task RemoveUserFromRoleAsync(string userId, int roleId)
     {
         throw new NotImplementedException();
     }

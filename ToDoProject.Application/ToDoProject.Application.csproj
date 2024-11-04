@@ -10,4 +10,8 @@
       <ProjectReference Include="..\ToDoProject.DataAccess\ToDoProject.DataAccess.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.2.0" />
+    </ItemGroup>
+
 </Project>

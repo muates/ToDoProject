@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
-using ToDoProject.DataAccess.Config;
+using ToDoProject.Core.Config;
 
 namespace ToDoProject.DataAccess.Context;
 
