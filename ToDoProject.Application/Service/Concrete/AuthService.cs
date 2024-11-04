@@ -1,8 +1,10 @@
 using ToDoProject.Application.Converter;
 using ToDoProject.Application.Helper;
 using ToDoProject.Application.Service.Abstract;
+using ToDoProject.Core.Manager.Abstract;
 using ToDoProject.Core.Model.Response;
 using ToDoProject.Core.Service.Abstract;
+using ToDoProject.CrossCutting.Ex;
 using ToDoProject.DataAccess.Repository.Abstract;
 using ToDoProject.Model.Dto.User.Request;
 using ToDoProject.Model.Dto.User.Response;
@@ -13,16 +15,17 @@ public class AuthService(
     IUserRepository userRepository,
     IUnitOfWork unitOfWork,
     IRoleService roleService,
-    IUserRoleService userRoleService)
+    IUserRoleService userRoleService,
+    ITransactionManager transactionManager)
     : IAuthService
 {
     public async Task<OperationResponse<LoginResponse>> LoginAsync(LoginRequest request)
     {
         var user = await userRepository.GetUserByUsernameAsync(request.Username);
 
-        if (user is null || PasswordHelper.VerifyPassword(request.Password, user.PasswordHash, user.PasswordSalt))
+        if (user is null || !PasswordHelper.VerifyPassword(request.Password, user.PasswordHash, user.PasswordSalt))
         {
-            return new OperationResponse<LoginResponse>(401, null, "Invalid credentials");
+            throw new InvalidCredentialException("Invalid credentials");
         }
 
         var token = TokenHelper.GenerateToken(user.Id, user.Username);
@@ -34,32 +37,35 @@ public class AuthService(
 
     public async Task<OperationResponse<RegisterResponse>> RegisterAsync(RegisterRequest request)
     {
-        var isExistUser = await userRepository.UserExistsAsync(request.Username);
-        if (isExistUser)
+        return await transactionManager.ExecuteInTransaction(async () =>
         {
-            return new OperationResponse<RegisterResponse>(409, null, "User already exists");
-        }
+            var isExistUser = await userRepository.UserExistsAsync(request.Username);
+            if (isExistUser)
+            {
+                throw new AlreadyExistException("User already exists");
+            }
 
-        var (passwordHash, passwordSalt) = PasswordHelper.CreatePasswordHash(request.Password);
+            var (passwordHash, passwordSalt) = PasswordHelper.CreatePasswordHash(request.Password);
 
-        var user = UserConverter.ToEntity(request, passwordHash, passwordSalt);
-        await userRepository.AddAsync(user);
+            var user = UserConverter.ToEntity(request, passwordHash, passwordSalt);
+            await userRepository.AddAsync(user);
 
-        await unitOfWork.SaveChangesAsync();
+            await unitOfWork.SaveChangesAsync();
 
-        var role = roleService.GetRoleByNameAsync("ROLE_USER");
+            var role = await roleService.GetRoleByNameAsync("ROLE_USER");
 
-        if (role is null)
-        {
-            throw new ApplicationException("Role not found");
-        }
-        
-        await userRoleService.AddUserToRoleAsync(user.Id, role.Id);   
+            if (role is null)
+            {
+                throw new NotFoundException("Role not found");
+            }
 
-        await unitOfWork.SaveChangesAsync();
+            await userRoleService.AddUserToRoleAsync(user.Id, role.Id);
 
-        var response = UserConverter.ToDto(user.Id, user.Username, user.Email);
+            await unitOfWork.SaveChangesAsync();
 
-        return new OperationResponse<RegisterResponse>(201, response, "User registered successfully");
+            var response = UserConverter.ToDto(user.Id, user.Username, user.Email);
+
+            return new OperationResponse<RegisterResponse>(201, response, "User registered successfully");
+        });
     }
 }

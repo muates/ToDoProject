@@ -14,8 +14,9 @@ public abstract class UserConverter
             Email = request.Email,
             PasswordHash = passwordHash,
             PasswordSalt = passwordSalt,
+            SecurityStamp = Guid.NewGuid().ToString(),
             IsEmailConfirmed = false,
-            LastLoginDate = DateTime.UtcNow
+            LastLoginDate = DateTime.Now
         };
     }
 

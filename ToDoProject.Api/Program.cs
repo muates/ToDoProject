@@ -12,6 +12,7 @@ builder.Services
     .AddApplicationServices()
     .AddDataAccessServices()
     .AddCrossCuttingServices()
+    .AddCoreServices()
     .AddUnitOfWork<PostgreSqlDbContext>()
     .AddDatabaseConnections();
 
@@ -38,7 +39,7 @@ app.UseAuthorization();
 var loggerService = app.Services.GetRequiredService<ILoggerService>();
 GlobalLogger.Configure(loggerService);
 
-//app.UseApplicationMiddleware();
+app.UseApplicationMiddleware();
 app.MapControllers();
 
 app.Run();

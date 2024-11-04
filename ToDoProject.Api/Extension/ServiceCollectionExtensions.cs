@@ -2,6 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using ToDoProject.Application.Service.Abstract;
 using ToDoProject.Application.Service.Concrete;
 using ToDoProject.Core.Config;
+using ToDoProject.Core.Manager.Abstract;
+using ToDoProject.Core.Manager.Concrete;
 using ToDoProject.Core.Service.Abstract;
 using ToDoProject.Core.Service.Concrete;
 using ToDoProject.CrossCutting.Logger.Abstract;
@@ -41,9 +43,18 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
+    public static IServiceCollection AddCoreServices(this IServiceCollection services)
+    {
+        services.AddScoped<ITransactionManager, TransactionManager>();
+        
+        return services;
+    }
+
     public static IServiceCollection AddUnitOfWork<TContext>(this IServiceCollection services) where TContext : DbContext
     {
         services.AddScoped<IUnitOfWork, UnitOfWork<TContext>>();
+        services.AddScoped<TContext>();
+        
         return services;
     }
 
