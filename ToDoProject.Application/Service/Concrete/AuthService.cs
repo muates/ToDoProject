@@ -21,14 +21,16 @@ public class AuthService(
 {
     public async Task<OperationResponse<LoginResponse>> LoginAsync(LoginRequest request)
     {
-        var user = await userRepository.GetUserByUsernameAsync(request.Username);
+        var user = await userRepository.GetUserWithRoleAsync(request.Username);
 
         if (user is null || !PasswordHelper.VerifyPassword(request.Password, user.PasswordHash, user.PasswordSalt))
         {
             throw new InvalidCredentialException("Invalid credentials");
         }
-
-        var token = TokenHelper.GenerateToken(user.Id, user.Username);
+        
+        var roles = user.UserRoles.Select(ur => ur.Role.Name).ToList();
+        
+        var token = TokenHelper.GenerateToken(user.Id, user.Username, roles);
 
         var response = UserConverter.ToDto(token, 30);
 

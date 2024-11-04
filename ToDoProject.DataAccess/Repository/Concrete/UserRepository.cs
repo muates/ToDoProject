@@ -14,6 +14,14 @@ public class UserRepository(PostgreSqlDbContext context)
     public async Task<User?> GetUserByUsernameAsync(string username) =>
         await _context.Users.FirstOrDefaultAsync(user => user.Username == username);
 
+    public async Task<User?> GetUserWithRoleAsync(string username)
+    {
+        return await _context.Users
+            .Include(u => u.UserRoles)
+            .ThenInclude(ur => ur.Role)
+            .SingleOrDefaultAsync(u => u.Username == username);
+    }
+
     public async Task<bool> UserExistsAsync(string username) =>
         await _context.Users.AnyAsync(user => user.Username == username);
 }

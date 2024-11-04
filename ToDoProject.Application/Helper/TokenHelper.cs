@@ -8,15 +8,17 @@ namespace ToDoProject.Application.Helper;
 
 public static class TokenHelper
 {
-    public static string GenerateToken(int userId, string username)
+    public static string GenerateToken(int userId, string username, List<string> roles)
     {
-        var claims = new[]
+        var claims = new List<Claim>
         {
             new Claim(JwtRegisteredClaimNames.Sub, username),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new Claim(ClaimTypes.NameIdentifier, userId.ToString())
         };
         
+        claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
+
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(EnvironmentConfig.JwtKey ?? string.Empty));
         var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
