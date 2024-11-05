@@ -12,7 +12,7 @@ builder.Services
     .AddApplicationServices()
     .AddDataAccessServices()
     .AddCrossCuttingServices()
-    .AddCoreServices()
+    .AddTransactionManager<PostgreSqlDbContext>()
     .AddUnitOfWork<PostgreSqlDbContext>()
     .AddDatabaseConnections();
 

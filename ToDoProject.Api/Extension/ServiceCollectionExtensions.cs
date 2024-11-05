@@ -43,10 +43,9 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
-    public static IServiceCollection AddCoreServices(this IServiceCollection services)
+    public static IServiceCollection AddTransactionManager<TContext>(this IServiceCollection services) where TContext : DbContext
     {
-        services.AddScoped<ITransactionManager, TransactionManager>();
-        
+        services.AddScoped<ITransactionManager, TransactionManager<TContext>>();
         return services;
     }
 
