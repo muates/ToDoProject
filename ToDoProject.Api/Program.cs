@@ -16,10 +16,15 @@ builder.Services
     .AddUnitOfWork<PostgreSqlDbContext>()
     .AddDatabaseConnections();
 
+// Jwt
+builder.Services.AddJwtAuthentication();
+builder.Services.AddCustomAuthorization();
+
+// Logger 
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+// Swagger/OpenAPI
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -34,6 +39,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+// Middleware
+app.UseAuthentication();
 app.UseAuthorization();
 
 var loggerService = app.Services.GetRequiredService<ILoggerService>();
