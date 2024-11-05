@@ -11,11 +11,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Dto\Category\Request\" />
-      <Folder Include="Dto\Category\Response\" />
       <Folder Include="Dto\Role\Response\" />
-      <Folder Include="Dto\ToDo\Request\" />
-      <Folder Include="Dto\ToDo\Response\" />
     </ItemGroup>
 
 </Project>

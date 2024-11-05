@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ToDoProject.Api.Controller;
 
-[Route("api/v1/test")]
 [ApiController]
+[Route("api/v1/test")]
 public class TestController : ControllerBase
 {
     [Authorize(Roles = "ROLE_USER")]

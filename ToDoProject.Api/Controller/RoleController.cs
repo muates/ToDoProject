@@ -4,8 +4,8 @@ using ToDoProject.Model.Dto.Role.Request;
 
 namespace ToDoProject.Api.Controller;
 
-[Route("api/v1/role")]
 [ApiController]
+[Route("api/v1/role")]
 public class RoleController(IRoleService roleService) : ControllerBase
 {
     [HttpPost("add")]

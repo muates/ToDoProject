@@ -5,8 +5,8 @@ using ToDoProject.Model.Dto.User.Request;
 
 namespace ToDoProject.Api.Controller;
 
-[Route("api/v1/auth")]
 [ApiController]
+[Route("api/v1/auth")]
 public class AuthController(IAuthService authService, IValidationStrategy<RegisterRequest> registerRequestValidation)
     : ControllerBase
 {
