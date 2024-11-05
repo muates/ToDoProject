@@ -8,9 +8,12 @@ using ToDoProject.Core.Service.Abstract;
 using ToDoProject.Core.Service.Concrete;
 using ToDoProject.CrossCutting.Logger.Abstract;
 using ToDoProject.CrossCutting.Logger.Concrete;
+using ToDoProject.CrossCutting.Validation.Abstract;
+using ToDoProject.CrossCutting.Validation.Concrete;
 using ToDoProject.DataAccess.Context;
 using ToDoProject.DataAccess.Repository.Abstract;
 using ToDoProject.DataAccess.Repository.Concrete;
+using ToDoProject.Model.Dto.User.Request;
 
 namespace ToDoProject.Api.Extension;
 
@@ -39,6 +42,7 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddCrossCuttingServices(this IServiceCollection services)
     {
         services.AddSingleton<ILoggerService, LoggerService>();
+        services.AddScoped<IValidationStrategy<RegisterRequest>, RegisterRequestValidator>();
         
         return services;
     }

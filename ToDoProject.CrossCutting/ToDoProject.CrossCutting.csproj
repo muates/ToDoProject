@@ -10,8 +10,4 @@
       <ProjectReference Include="..\ToDoProject.Model\ToDoProject.Model.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Validation\" />
-    </ItemGroup>
-
 </Project>

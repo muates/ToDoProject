@@ -1,12 +1,14 @@
 using Microsoft.AspNetCore.Mvc;
 using ToDoProject.Application.Service.Abstract;
+using ToDoProject.CrossCutting.Validation.Abstract;
 using ToDoProject.Model.Dto.User.Request;
 
 namespace ToDoProject.Api.Controller;
 
 [Route("api/v1/auth")]
 [ApiController]
-public class AuthController(IAuthService authService) : ControllerBase
+public class AuthController(IAuthService authService, IValidationStrategy<RegisterRequest> registerRequestValidation)
+    : ControllerBase
 {
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginRequest request)
@@ -29,18 +31,10 @@ public class AuthController(IAuthService authService) : ControllerBase
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] RegisterRequest request)
     {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest("Invalid request data");
-        }
+        registerRequestValidation.Validate(request);
 
         var result = await authService.RegisterAsync(request);
-
-        if (result.StatusCode == 409)
-        {
-            return Conflict(result.Message);
-        }
-
+        
         return CreatedAtAction(nameof(Register), result);
     }
 }

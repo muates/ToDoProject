@@ -24,6 +24,7 @@ public class ErrorHandlingMiddleware(RequestDelegate next)
 
         var response = ex switch
         {
+            ValidationException => new OperationResponse<object>(400, null!, errorMessage),
             InvalidCredentialException => new OperationResponse<object>(401, null!, errorMessage),
             NotFoundException => new OperationResponse<object>(404, null!, errorMessage),
             AlreadyExistException => new OperationResponse<object>(409, null!, errorMessage),
