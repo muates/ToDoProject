@@ -1,11 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using ToDoProject.Core.Manager.Abstract;
-using ToDoProject.Core.Service.Abstract;
 
 namespace ToDoProject.Core.Manager.Concrete;
 
-public class TransactionManager<TContext>(IUnitOfWork unitOfWork, TContext context) : ITransactionManager where TContext : DbContext
+public class TransactionManager<TContext>(TContext context) : ITransactionManager where TContext : DbContext
 {
     private IDbContextTransaction? _transaction;
 
@@ -20,7 +19,7 @@ public class TransactionManager<TContext>(IUnitOfWork unitOfWork, TContext conte
         try
         {
             var result = await action();
-            await unitOfWork.SaveChangesAsync();
+            await context.SaveChangesAsync();
             await _transaction?.CommitAsync();
             return result;
         }

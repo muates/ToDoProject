@@ -1,9 +1,13 @@
 using ToDoProject.Api.Extension;
+using ToDoProject.Core.Config;
 using ToDoProject.CrossCutting.Logger.Abstract;
 using ToDoProject.CrossCutting.Logger.Concrete;
 using ToDoProject.DataAccess.Context;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Env Load
+EnvironmentConfig.LoadEnv();
 
 // Add services to the container.
 builder.Services.AddControllers();

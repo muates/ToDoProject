@@ -45,22 +45,28 @@ public static class ServiceCollectionExtensions
 
     public static IServiceCollection AddTransactionManager<TContext>(this IServiceCollection services) where TContext : DbContext
     {
-        services.AddScoped<ITransactionManager, TransactionManager<TContext>>();
+        services.AddScoped<ITransactionManager>(provider =>
+        {
+            var context = provider.GetRequiredService<TContext>();
+            return new TransactionManager<TContext>(context);
+        });
+        
         return services;
     }
 
     public static IServiceCollection AddUnitOfWork<TContext>(this IServiceCollection services) where TContext : DbContext
     {
-        services.AddScoped<IUnitOfWork, UnitOfWork<TContext>>();
-        services.AddScoped<TContext>();
+        services.AddScoped<IUnitOfWork>(provider =>
+        {
+            var context = provider.GetRequiredService<TContext>();
+            return new UnitOfWork<TContext>(context);
+        });
         
         return services;
     }
 
     public static IServiceCollection AddDatabaseConnections(this IServiceCollection services)
     {
-        EnvironmentConfig.LoadEnv();
-
         services.AddDbContext<PostgreSqlDbContext>(options =>
             options.UseNpgsql(EnvironmentConfig.PostgreSqlConnection));
 
