@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoProject.Application", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoProject.Api", "ToDoProject.Api\ToDoProject.Api.csproj", "{87AAC57A-80DE-476F-8398-18FA8CBCFFB1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoProject.Test", "ToDoProject.Test\ToDoProject.Test.csproj", "{CADFCA72-DD1A-4215-B19E-EBD902FED57C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -48,5 +50,9 @@ Global
 		{87AAC57A-80DE-476F-8398-18FA8CBCFFB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{87AAC57A-80DE-476F-8398-18FA8CBCFFB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{87AAC57A-80DE-476F-8398-18FA8CBCFFB1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CADFCA72-DD1A-4215-B19E-EBD902FED57C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CADFCA72-DD1A-4215-B19E-EBD902FED57C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CADFCA72-DD1A-4215-B19E-EBD902FED57C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CADFCA72-DD1A-4215-B19E-EBD902FED57C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
